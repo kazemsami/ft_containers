@@ -1,4 +1,4 @@
-NAME = ft_container
+NAME = ft_containers
 FLAGS = -Wall -Wextra -Werror
 CC = c++
 SRCS = main.cpp

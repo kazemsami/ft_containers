@@ -1,14 +1,24 @@
 #include <iostream>
 #include "vector.hpp"
+#include <vector>
 
 int main()
 {
+	ft::vector<int> test(9, 10);
 	ft::vector<int> vec;
-	vec.push_back(5);
-	vec.push_back(10);
-	vec.push_back(15);
-	vec.push_back(14);
+	vec.assign(10, 6);
+	std::cout << vec.capacity() << std::endl;
+	std::cout << vec.size() << std::endl;
+	vec.assign(5, 6);
+	std::cout << vec.capacity() << std::endl;
+	std::cout << vec.size() << std::endl;
+	vec.resize(10);
+	std::cout << vec.capacity() << std::endl;
+	std::cout << vec.size() << std::endl;
 	ft::vector<int>::iterator begin = vec.begin();
-	ft::vector<int>::iterator end = vec.begin();
-	std::cout << *(it + 3) << std::endl;
+	ft::vector<int>::iterator end = vec.end();
+	for (ft::vector<int>::iterator it = begin; it != end; it++)
+	{
+		std::cout << *it << std::endl;
+	}
 }
