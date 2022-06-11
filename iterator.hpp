@@ -6,51 +6,43 @@
 
 namespace ft
 {
-	template <class T, bool> struct iterator_traits_impl {};
-	template <class T>
-	struct iterator_traits_impl<T, true>
-	{
-		typedef typename T::difference_type   difference_type;
-		typedef typename T::value_type        value_type;
-		typedef typename T::pointer           pointer;
-		typedef typename T::reference         reference;
-		typedef typename T::iterator_category iterator_category;
-	};
+	template<typename _Iterator>
+    struct iterator_traits
+    {
+      typedef typename _Iterator::iterator_category iterator_category;
+      typedef typename _Iterator::value_type        value_type;
+      typedef typename _Iterator::difference_type   difference_type;
+      typedef typename _Iterator::pointer           pointer;
+      typedef typename _Iterator::reference         reference;
+    };
 
-	template <class T, bool> struct iterator_traits_base {};
+ 	template<typename _Tp>
+    struct iterator_traits<_Tp*>
+    {
+      typedef std::random_access_iterator_tag iterator_category;
+      typedef _Tp                         value_type;
+      typedef ptrdiff_t                   difference_type;
+      typedef _Tp*                        pointer;
+      typedef _Tp&                        reference;
+    };
 
-	template <class T>
-	struct iterator_traits_base<T, true>
-		:  iterator_traits_impl
-		<
-			T,
-			true
-		>
-	{};
-
-	template <class T>
-	struct iterator_traits
-		: iterator_traits_base<T, true> {
-	};
-
-	template <class T>
-	struct iterator_traits<T*>
-	{
-		typedef ptrdiff_t difference_type;
-		typedef T value_type;
-		typedef T* pointer;
-		typedef T& reference;
-		typedef std::random_access_iterator_tag iterator_category;
-	};
-
+  	template<typename _Tp>
+    struct iterator_traits<const _Tp*>
+    {
+      typedef std::random_access_iterator_tag iterator_category;
+      typedef _Tp                         value_type;
+      typedef ptrdiff_t                   difference_type;
+      typedef const _Tp*                  pointer;
+      typedef const _Tp&                  reference;
+    };
 	template<class category, class tp, class distance = ptrdiff_t, class ptr = tp*, class ref = tp&>
 	struct iterator
 	{
-		typedef tp        value_type;
-		typedef distance  difference_type;
-		typedef ptr   pointer;
-		typedef ref reference;
-		typedef category  iterator_category;
+		typedef tp			value_type;
+		typedef distance	difference_type;
+		typedef ptr   		pointer;
+		typedef ref			reference;
+		typedef category	iterator_category;
 	};
 	template <class T>
 	class reverse_iterator : public ft::iterator<typename iterator_traits<T>::iterator_category,
@@ -59,19 +51,19 @@ namespace ft
 						typename iterator_traits<T>::pointer,
 						typename iterator_traits<T>::reference>
 	{
-	private:
-		T current;
 	public:
 		typedef T                                        		iterator_type;
 		typedef typename iterator_traits<T>::difference_type 	difference_type;
 		typedef typename iterator_traits<T>::reference       	reference;
 		typedef typename iterator_traits<T>::pointer         	pointer;
-		reverse_iterator(T cur) : current(cur) {}
+	private:
+		pointer current;
+		reverse_iterator(pointer cur) : current(cur) {}
 		reverse_iterator& operator=(const reverse_iterator<T>& u)
 		{
 			current = u.base(); return *this;
 		}
-		T base() const
+		pointer base() const
 		{
 			return current;
 		}
@@ -139,12 +131,16 @@ namespace ft
 		typedef typename ft::iterator_traits<iterator_type>::pointer pointer;
 		typedef typename ft::iterator_traits<iterator_type>::iterator_category iterator_category;
 	private:
-		iterator_type ptr;
+		pointer ptr;
 	public:
-		wrap_iter(iterator_type arr): ptr(arr)
+		wrap_iter(pointer arr): ptr(arr)
 		{
 		}
 		~wrap_iter() {}
+		pointer base()
+		{
+			return (ptr);
+		}
 		reference operator*() const
 		{
 			return (*this->ptr);
@@ -201,15 +197,16 @@ namespace ft
 		{
 			return t.ptr == this->ptr;
 		}
-		bool operator!=(const wrap_iter &t) const
-		{
-			return t.ptr != this->ptr;
-		}
 		reference  operator[](difference_type n) const 
 		{
 			return *(*this + n);
 		}
 	};
+	template <typename T>
+	bool operator!=(const ft::wrap_iter<T*> lhs, const ft::wrap_iter<T*> rhs)
+	{
+		return (lhs.base() != rhs.base());
+	}
 }
 
 #endif
