@@ -136,10 +136,7 @@ namespace ft
 			}
 			else
 			{
-				if (this->capacity() == 0)
-					this->reserve(1);
-				else
-					this->reserve(this->size() + count);
+				this->reserve(this->size() + count);
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
@@ -180,10 +177,7 @@ namespace ft
 			}
 			else
 			{
-				if (this->capacity() == 0)
-					this->reserve(1);
-				else
-					this->reserve(this->size() + count);
+				this->reserve(this->size() + count);
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
@@ -269,13 +263,35 @@ namespace ft
 		{
 			if (pos >= this->size())
 				throw std::out_of_range("vector");
-			return *(this->start + pos);
+			return *(this->_start + pos);
 		}
 		reference	at(size_type pos)
 		{
 			if (pos >= this->size())
 				throw std::out_of_range("vector");
-			return *(this->start + pos);
+			return *(this->_start + pos);
+		}
+		void	swap(vector & vec)
+		{
+			pointer tmp_start = this->_start;
+			pointer tmp_end = this->_end;
+			pointer tmp_capa = this->_capa;
+			allocator_type tmp_alloc = this->_alloc;
+
+			this->_start = vec._start;
+			this->_end = vec._end;
+			this->_capa = vec._capa;
+			this->_alloc = vec._alloc;
+
+			vec._start = tmp_start;
+			vec._end = tmp_end;
+			vec._capa = tmp_capa;
+			vec._alloc = tmp_alloc;
+		}
+		void	pop_back()
+		{
+			this->_alloc.destroy(&this->back());
+			this->_end--;
 		}
 		void	push_back(const value_type& element)
 		{
@@ -388,7 +404,7 @@ namespace ft
 				size_type sz = this->size();
 				for (size_type i = n; i < sz; ++i)
 				{
-					this->alloc.destroy(this->_end - 1);
+					this->_alloc.destroy(this->_end - 1);
 					this->_end--;
 				}
 			}
@@ -444,6 +460,32 @@ namespace ft
 			return *(this->_start + n);
 		}
 	};
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator==(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return (x.size() == y.size()
+	      && std::equal(x.begin(), x.end(), y.begin())); }
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator!=(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return (!(x == y)); }
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator<(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return std::lexicographical_compare(x.begin(), x.end(),
+					  y.begin(), y.end()); }
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator<=(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return (!(y < x)); }
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator>(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return (y < x); }
+	template<typename Tp, typename Alloc>
+    inline bool
+    operator>=(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
+    { return (!(x < y)); }
 }
 
 #endif

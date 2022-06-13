@@ -1,6 +1,6 @@
 NAME = ft_containers
 CFLAGS = -Wall -Wextra -Werror
-CC = c++
+CC = clang++
 SRCS = main.cpp
 OBJS = ${SRCS:.cpp=.o}
 
