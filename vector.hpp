@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <limits>
 #include <memory>
+#include <algorithm>
 
 namespace ft
 {
@@ -78,7 +79,7 @@ namespace ft
 		{
 			return (this->_start);
 		}
-		const pointer data() const
+		const_pointer data() const
 		{
 			return (this->_start);;
 		}
@@ -99,10 +100,11 @@ namespace ft
 			}
 			else
 			{
-				if (this->capacity() == 0)
-					this->reserve(1);
-				else
-					this->reserve(2 * this->capacity());
+				if (this->max_size() - this->size() < 1)
+					throw std::length_error("max capacity reached");
+				const size_type len = this->size() + std::max(this->size(), size_type(1));
+				size_type resrve = (len < this->size() || len > this->max_size()) ? this->max_size() : len;
+				this->reserve(resrve);
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
@@ -136,7 +138,11 @@ namespace ft
 			}
 			else
 			{
-				this->reserve(this->size() + count);
+				if (this->max_size() - this->size() < count)
+					throw std::length_error("max capacity reached");
+				const size_type len = this->size() + std::max(this->size(), count);
+				size_type resrve = (len < this->size() || len > this->max_size()) ? this->max_size() : len;
+				this->reserve(resrve);
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
@@ -177,7 +183,11 @@ namespace ft
 			}
 			else
 			{
-				this->reserve(this->size() + count);
+				if (this->max_size() - this->size() < count)
+					throw std::length_error("max capacity reached");
+				const size_type len = this->size() + std::max(this->size(), count);
+				size_type resrve = (len < this->size() || len > this->max_size()) ? this->max_size() : len;
+				this->reserve(resrve);
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
@@ -460,11 +470,12 @@ namespace ft
 			return *(this->_start + n);
 		}
 	};
+
 	template<typename Tp, typename Alloc>
     inline bool
     operator==(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
     { return (x.size() == y.size()
-	      && std::equal(x.begin(), x.end(), y.begin())); }
+	      && ft::equal(x.begin(), x.end(), y.begin())); }
 	template<typename Tp, typename Alloc>
     inline bool
     operator!=(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
@@ -472,7 +483,7 @@ namespace ft
 	template<typename Tp, typename Alloc>
     inline bool
     operator<(const vector<Tp, Alloc>& x, const vector<Tp, Alloc>& y)
-    { return std::lexicographical_compare(x.begin(), x.end(),
+    { return ft::lexicographical_compare(x.begin(), x.end(),
 					  y.begin(), y.end()); }
 	template<typename Tp, typename Alloc>
     inline bool

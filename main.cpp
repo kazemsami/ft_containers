@@ -1,18 +1,21 @@
 #include <iostream>
 #include "vector.hpp"
+#include "map.hpp"
 #include <vector>
+#include <map>
+#include <stack>
 
-int main()
+int		main(void)
 {
-	const int size = 5;
-	ft::vector<int> vct(size);
-	vct.push_back(5);
-	vct.push_back(10);
-	vct.push_back(7);
-	vct.push_back(5);
-	vct.push_back(3);
-	ft::vector<int>::reverse_iterator it = vct.rbegin();
-	ft::vector<int>::reverse_iterator mid_it;
-	mid_it = it + 3;
-	std::cout << *mid_it << std::endl;
+	std::stack<std::string>:: mp;
+	mp::
+	mp[10] = "hello";
+	mp[9] = "hello";
+
+	for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); it++)
+	{
+		std::cout << (*it).first << std::endl;
+	}
+
+	return (0);
 }
