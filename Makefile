@@ -2,21 +2,18 @@ NAME = ft_containers
 CFLAGS = -Wall -Wextra -Werror
 CC = clang++
 SRCS = main.cpp
-OBJS = ${SRCS:.cpp=.o}
 
 all: ${NAME}
 
-${NAME}: ${OBJS}
-	${CC} ${CFLAGS} -std=c++98 ${OBJS} -o $@
-
-%.o: %.cpp
-	${CC} ${CFLAGS} -std=c++98 -c $<
+${NAME}:
+	${CC} ${CFLAGS} ${SRCS} -std=c++98 -D TESTED_CONT=ft -o $@
+	${CC} ${CFLAGS} ${SRCS} -std=c++98 -D TESTED_CONT=std -o std_containers
 
 clean:
-	rm -rf *.o
 
 fclean: clean
 	rm -rf ${NAME}
+	rm -rf std_containers
 
 re: fclean all
 

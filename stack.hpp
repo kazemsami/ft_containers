@@ -17,7 +17,7 @@ namespace ft
 		explicit stack( const Container& cont = Container() ) : c(cont)
 		{
 		}
-		stack( const stack& other ) c(other.c)
+		stack( const stack& other ) : c(other.c)
 		{
 		}
 		stack& operator=( const stack& other )
@@ -55,6 +55,29 @@ namespace ft
 		{
 			this->c.pop_back();
 		}
+		template<typename Tp, typename Cont>
+		friend bool
+		operator==(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
+
+		template<typename Tp, typename Cont>
+			friend bool
+			operator<(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
+
+		template<typename Tp, typename Cont>
+			friend bool
+			operator!=(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
+
+		template<typename Tp, typename Cont>
+			friend bool
+			operator>(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
+
+		template<typename Tp, typename Cont>
+			friend bool
+			operator<=(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
+
+		template<typename Tp, typename Cont>
+			friend bool
+			operator>=(const stack<Tp, Cont>& x, const stack<Tp, Cont>& y);
 	protected:
 		container_type c;
 	};

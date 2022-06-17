@@ -3,7 +3,7 @@
 
 #include <functional>
 #include "pair.hpp"
-#include "LinkedList.hpp"
+#include "BinaryTree.hpp"
 #include "type_traits.hpp"
 #include <memory>
 
@@ -30,14 +30,14 @@ namespace ft
 	public:
 		typedef Key											key_type;
 		typedef T											mapped_type;
-		typedef ft::pair<const Key, T>						value_type;
+		typedef ft::pair<Key, T>						value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
-		typedef ft::LinkedList<value_type, Compare>			linked_lst;
-		typedef	typename linked_lst::iterator				iterator;
-		typedef typename linked_lst::reverse_iterator		reverse_iterator;
-		typedef typename linked_lst::const_iterator			const_iterator;
-		typedef typename linked_lst::const_reverse_iterator	const_reverse_iterator;
+		typedef ft::BinaryTree<value_type, Compare>			binary_tree;
+		typedef	typename binary_tree::iterator				iterator;
+		typedef typename binary_tree::reverse_iterator		reverse_iterator;
+		typedef typename binary_tree::const_iterator			const_iterator;
+		typedef typename binary_tree::const_reverse_iterator	const_reverse_iterator;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::reference			reference;
@@ -109,11 +109,11 @@ namespace ft
 		} 
 		iterator find (const key_type& key)
 		{
-			return (iterator(this->lst.findKey(key))); 
+			return (iterator(this->bst.findKey(key), this->bst.first, this->bst.last, this->bst.end)); 
 		}
 		const_iterator find (const key_type& key) const
 		{
-			return (const_iterator(this->lst.findKey(key)));
+			return (const_iterator(this->bst.findKey(key), this->bst.first, this->bst.last, this->bst.end));
 		}
 		const_iterator lower_bound(const key_type& key) const
 		{
@@ -167,24 +167,24 @@ namespace ft
 		}
 		bool empty() const
 		{
-			return (this->lst.first == this->lst.last);
+			return (this->bst.first == this->bst.last);
 		}
 		size_type size() const
 		{
-			return (this->lst.size());
+			return (this->bst.size());
 		}
 		size_type max_size() const
 		{
-			return (this->lst.max_size());
+			return (this->bst.max_size());
 		}
 		ft::pair<iterator,bool>	insert(const value_type& value)
 		{
-			return (this->lst.insertPair(value));
+			return (this->bst.insertPair(value));
 		}
 		iterator	insert(iterator position, const value_type& value)
 		{
 			(void)position;
-			return (this->lst.insertPair(value).first);
+			return (this->bst.insertPair(value).first);
 		}
 		template< class InputIt >
 		void insert( InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
@@ -204,7 +204,7 @@ namespace ft
 		{
 			if (this->find(key) != this->end())
 			{
-				this->lst.removeKey(key);
+				this->bst.removeKey(key);
 				return (1);
 			}
 			return (0);
@@ -212,23 +212,25 @@ namespace ft
 		void erase(iterator first, iterator last)
 		{
 			for (iterator it = first; it != last; it++)
+			{
 				this->erase((*it).first);
+			}
 		}
 		iterator begin()
 		{
-			return (iterator(this->lst.first));
+			return (iterator(this->bst.first, this->bst.first, this->bst.last, this->bst.end));
 		}
 		iterator end()
 		{
-			return (iterator(this->lst.last));
+			return (iterator(this->bst.end, this->bst.first, this->bst.last, this->bst.end));
 		}
 		const_iterator begin() const
 		{
-			return (const_iterator(this->lst.first));
+			return (const_iterator(this->bst.first, this->bst.first, this->bst.last, this->bst.end));
 		}
 		const_iterator end() const
 		{
-			return (const_iterator(this->lst.last));
+			return (const_iterator(this->bst.end, this->bst.first, this->bst.last, this->bst.end));
 		}
 		reverse_iterator rbegin()
 		{
@@ -248,7 +250,7 @@ namespace ft
 		}
 		void swap(map& m)
 		{
-			this->lst.swap(m.lst);
+			this->bst.swap(m.bst);
 			allocator_type tmp_alloc = this->alloc;
 			key_compare tmp_comp = this->comp;
 			this->alloc = m.alloc;
@@ -257,7 +259,7 @@ namespace ft
 			m.comp = tmp_comp;
 		}
 	private:
-		linked_lst		lst;
+		binary_tree		bst;
 		allocator_type	alloc;
 		key_compare		comp;
 	};
