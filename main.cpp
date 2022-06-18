@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 
-#define MAX_RAM 32949
+#define MAX_RAM 4294967299
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -84,6 +84,7 @@ int main(int argc, char** argv) {
 		map_int.insert(TESTED_CONT::make_pair(rand(), rand()));
 	}
 	time(&end);
+	TESTED_CONT::map<int, int> test;
 	std::cout << "It took " << end - start << " seconds to insert " << COUNT << " pairs in map" << std::endl;
 
 	time(&start);
@@ -103,16 +104,6 @@ int main(int argc, char** argv) {
 		TESTED_CONT::map<int, int> copy = map_int;
 	}
 	time(&end);
-	std::cout << "It took " << end - start << " seconds to assign " << 10000 << " pairs to new copy map" << std::endl;
-
-	ft::map<int, std::string> test;
-	test.insert(ft::pair<int, std::string>(5, "hello"));
-	test.insert(ft::pair<int, std::string>(8, "hello"));
-	test.insert(ft::pair<int, std::string>(10, "hello"));
-	test.insert(ft::pair<int, std::string>(11, "hello"));
-	test.erase(--(--(--test.end())), test.end());
-	for(ft::map<int, std::string>::iterator it = test.begin(); it != test.end(); it++)
-		std::cout << (*it).first << std::endl;
-	std::cout << test.size() << std::endl;
+	std::cout << "It took " << end - start << " seconds to assign " << map_int.size() << " pairs to new copy map" << std::endl;
 	return (0);
 }
