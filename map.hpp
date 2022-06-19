@@ -20,9 +20,10 @@ namespace ft
 	template<typename Tp>
     struct less : public ft::binary_function<Tp, Tp, bool>
     {
-      bool
-      operator()(const Tp& x, const Tp& y) const
-      { return x < y; }
+		typedef Tp value_type;
+		bool
+		operator()(const Tp& x, const Tp& y) const
+		{ return x < y; }
     };
 	template <typename Key, typename T, typename Compare = ft::less<Key>,
 	    typename Alloc = std::allocator<ft::pair<const Key, T> > >
@@ -110,11 +111,11 @@ namespace ft
 		} 
 		iterator find (const key_type& key)
 		{
-			return (iterator(this->avl.findKey(key), this->avl.first, this->avl.last, this->avl.sz)); 
+			return (iterator(this->avl.findKey(key), this->avl.first, this->avl.last, this->avl.end)); 
 		}
 		const_iterator find (const key_type& key) const
 		{
-			return (const_iterator(this->avl.findKey(key), this->avl.first, this->avl.last, this->avl.sz));
+			return (const_iterator(this->avl.findKey(key), this->avl.first, this->avl.last, this->avl.end));
 		}
 		const_iterator lower_bound(const key_type& key) const
 		{
@@ -231,25 +232,19 @@ namespace ft
 		}
 		iterator begin()
 		{
-			if (this->comp(1, 2))
-				return (iterator(this->avl.first, this->avl.first, this->avl.last, this->avl.sz));
-			else
-				return (iterator(this->avl.last, this->avl.first, this->avl.last, this->avl.sz));
+			return (iterator(this->avl.first, this->avl.first, this->avl.last, this->avl.end));
 		}
 		iterator end()
 		{
-			return (iterator(NULL, this->avl.first, this->avl.last, this->avl.sz));
+			return (iterator(NULL, this->avl.first, this->avl.last, this->avl.end));
 		}
 		const_iterator begin() const
 		{
-			if (this->comp(1, 2))
-				return (const_iterator(this->avl.first, this->avl.first, this->avl.last, this->avl.sz));
-			else
-				return (const_iterator(this->avl.last, this->avl.first, this->avl.last, this->avl.sz)); 
+			return (const_iterator(this->avl.first, this->avl.first, this->avl.last, this->avl.end));
 		}
 		const_iterator end() const
 		{
-			return (const_iterator(NULL, this->avl.first, this->avl.last, this->avl.sz));
+			return (const_iterator(NULL, this->avl.first, this->avl.last, this->avl.end));
 		}
 		reverse_iterator rbegin()
 		{

@@ -38,18 +38,13 @@ namespace ft
 		typedef ptrdiff_t			 difference_type;
 		typedef Alloc				allocator_type;
 		typedef Compare				key_compare;
-		AvlTreeIterator(Node* curr, Node* first, Node* last, size_t sz) : curr(curr), first(first), last(last), sz(sz), comp(key_compare())
+		AvlTreeIterator(Node* curr, Node* first, Node* last, Node* end) : curr(curr), first(first), last(last), end(end), comp(key_compare()), alloc(allocator_type())
 		{
-			this->end = this->alloc.allocate(1);
-			if (ft::is_integral<typename value_type::first_type>::value)
-				this->alloc.construct(this->end, Node(ft::make_pair(sz, typename value_type::second_type())));
-			if (this->comp(2, 1))
-			{
-				this->last = first;
-				this->first = last;
-			}
 		}
-		AvlTreeIterator() : curr(NULL), first(NULL), last(NULL), sz(0), comp(key_compare())
+		AvlTreeIterator() : curr(NULL), first(NULL), last(NULL), end(NULL), comp(key_compare()), alloc(allocator_type())
+		{
+		}
+		~AvlTreeIterator()
 		{
 		}
 		reference operator*() const
@@ -73,28 +68,19 @@ namespace ft
 			{
 				this->curr = this->first;
 			}
-			else if ((tmp->right == NULL && this->comp(1, 2)) || (tmp->left == NULL && this->comp(2, 1)))
+			else if (tmp->right == NULL)
 			{
 				tmp = tmp->parent;
 				while (tmp != NULL && this->comp(tmp->data.first, this->curr->data.first))
 					tmp = tmp->parent;
 				this->curr = tmp;
 			}
-			else if (this->comp(1, 2))
+			else
 			{
 				tmp = tmp->right;
 				while (tmp->left != NULL)
 				{
 					tmp = tmp->left;
-				}
-				this->curr = tmp;
-			}
-			else
-			{
-				tmp = tmp->left;
-				while (tmp->right != NULL)
-				{
-					tmp = tmp->right;
 				}
 				this->curr = tmp;
 			}
@@ -113,28 +99,19 @@ namespace ft
 			{
 				this->curr = this->last;
 			}
-			else if ((tmp->left == NULL && this->comp(1, 2)) || (tmp->right == NULL && this->comp(2, 1)))
+			else if (tmp->left == NULL)
 			{
 				tmp = tmp->parent;
 				while (tmp != NULL && this->comp(this->curr->data.first, tmp->data.first))
 					tmp = tmp->parent;
 				this->curr = tmp;
 			}
-			else if (this->comp(1, 2))
+			else
 			{
 				tmp = tmp->left;
 				while (tmp->right != NULL)
 				{
 					tmp = tmp->right;
-				}
-				this->curr = tmp;
-			}
-			else
-			{
-				tmp = tmp->right;
-				while (tmp->left != NULL)
-				{
-					tmp = tmp->left;
 				}
 				this->curr = tmp;
 			}
@@ -157,9 +134,8 @@ namespace ft
 		Node* first;
 		Node* last;
 		Node* end;
-		size_t sz;
-		allocator_type alloc;
 		key_compare comp;
+		allocator_type alloc;
 	};
 	template <class T, class Compare, class Node=ft::AvlNode<T>, class Alloc=std::allocator<Node> >
 	class ConstAvlTreeIterator
@@ -173,21 +149,16 @@ namespace ft
 		typedef std::bidirectional_iterator_tag iterator_category;
 		typedef ptrdiff_t			 difference_type;
 		typedef Compare					key_compare;
-		ConstAvlTreeIterator(Node* curr, Node* first, Node* last, size_t sz) : curr(curr), first(first), last(last), sz(sz), comp(key_compare())
-		{
-			this->end = this->alloc.allocate(1);
-			if (ft::is_integral<typename value_type::first_type>::value)
-				this->alloc.construct(this->end, Node(ft::make_pair(sz, typename value_type::second_type())));
-			if (this->comp(2, 1))
-			{
-				this->last = first;
-				this->first = last;
-			}
-		}
-		ConstAvlTreeIterator() : curr(NULL), first(NULL), last(NULL), sz(0), comp(key_compare())
+		ConstAvlTreeIterator(Node* curr, Node* first, Node* last, Node* end) : curr(curr), first(first), last(last), end(end), comp(key_compare()), alloc(allocator_type())
 		{
 		}
-		ConstAvlTreeIterator(const iterator& it) : curr(it.curr), first(it.first), last(it.last), end(it.end), sz(it.sz), comp(it.comp)
+		ConstAvlTreeIterator() : curr(NULL), first(NULL), last(NULL), end(NULL), comp(key_compare()), alloc(allocator_type())
+		{
+		}
+		ConstAvlTreeIterator(const iterator& it) : curr(it.curr), first(it.first), last(it.last), end(it.end), comp(it.comp), alloc(it.alloc)
+		{
+		}
+		~ConstAvlTreeIterator()
 		{
 		}
 		reference operator*() const
@@ -211,28 +182,19 @@ namespace ft
 			{
 				this->curr = this->first;
 			}
-			else if ((tmp->right == NULL && this->comp(1, 2)) || (tmp->left == NULL && this->comp(2, 1)))
+			else if (tmp->right == NULL)
 			{
 				tmp = tmp->parent;
 				while (tmp != NULL && this->comp(tmp->data.first, this->curr->data.first))
 					tmp = tmp->parent;
 				this->curr = tmp;
 			}
-			else if (this->comp(1, 2))
+			else
 			{
 				tmp = tmp->right;
 				while (tmp->left != NULL)
 				{
 					tmp = tmp->left;
-				}
-				this->curr = tmp;
-			}
-			else
-			{
-				tmp = tmp->left;
-				while (tmp->right != NULL)
-				{
-					tmp = tmp->right;
 				}
 				this->curr = tmp;
 			}
@@ -246,34 +208,24 @@ namespace ft
 		}
 		ConstAvlTreeIterator& operator--()
 		{
-			
 			Node* tmp = this->curr;
 			if (this->curr == NULL)
 			{
 				this->curr = this->last;
 			}
-			else if ((tmp->left == NULL && this->comp(1, 2)) || (tmp->right == NULL && this->comp(2, 1)))
+			else if (tmp->left == NULL)
 			{
 				tmp = tmp->parent;
 				while (tmp != NULL && this->comp(this->curr->data.first, tmp->data.first))
 					tmp = tmp->parent;
 				this->curr = tmp;
 			}
-			else if (this->comp(1, 2))
+			else
 			{
 				tmp = tmp->left;
 				while (tmp->right != NULL)
 				{
 					tmp = tmp->right;
-				}
-				this->curr = tmp;
-			}
-			else
-			{
-				tmp = tmp->right;
-				while (tmp->left != NULL)
-				{
-					tmp = tmp->left;
 				}
 				this->curr = tmp;
 			}
@@ -296,9 +248,8 @@ namespace ft
 		Node* first;
 		Node* last;
 		Node* end;
-		size_t sz;
-		allocator_type alloc;
 		key_compare comp;
+		allocator_type alloc;
 	};
 	template <class T, class Compare, class Node=ft::AvlNode<T>, class A=std::allocator<Node> >
 	class AvlTree
@@ -314,9 +265,16 @@ namespace ft
 		typedef size_t									size_type;
 		AvlTree() : root(NULL), last(NULL), first(NULL), sz(0), alloc(allocator_type()), comp(key_compare())
 		{
+			this->end = this->alloc.allocate(1);
+			if (ft::is_integral<typename value_type::first_type>::value)
+				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+			else
+				this->alloc.construct(this->end, Node(value_type()));
 		}
 		~AvlTree()
 		{
+			this->alloc.destroy(this->end);
+			this->alloc.deallocate(this->end, 1);
 		}
 		int calheight(Node *p){
 
@@ -356,7 +314,7 @@ namespace ft
 			Node *tp;
 			p = n;
 			tp = p->left;
-
+			
 			p->left = tp->right;
 			tp->right = p;
 			tp->height = calheight(tp);
@@ -373,7 +331,7 @@ namespace ft
 			Node *tp;
 			p = n;
 			tp = p->right;
-
+			
 			p->right = tp->left;
 			tp->left = p;
 			tp->height = calheight(tp);
@@ -392,6 +350,13 @@ namespace ft
 				Node* n = this->alloc.allocate(1);
 				this->alloc.construct(n, Node(data));
 				this->sz++;
+				this->alloc.destroy(this->end);
+				this->alloc.deallocate(this->end, 1);
+				this->end = this->alloc.allocate(1);
+				if (ft::is_integral<typename value_type::first_type>::value)
+					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				else
+					this->alloc.construct(this->end, Node(value_type()));
 				if (this->first == NULL)
 					this->first = n;
 				if (this->last == NULL)
@@ -400,18 +365,18 @@ namespace ft
 				return r;             
 			}
 			else{
-				if(data.first < r->data.first)
+				if(this->comp(data.first, r->data.first))
 				{
 					r->left = insert(r->left, data);
 					r->left->parent = r;
-					if (data.first < this->first->data.first)
+					if (this->comp(data.first, this->first->data.first))
 						this->first = r->left;
 				}
-				else if (data.first > r->data.first)
+				else if (this->comp(r->data.first, data.first))
 				{
 					r->right = insert(r->right, data);
 					r->right->parent = r;
-					if (data.first > this->last->data.first)
+					if (this->comp(this->last->data.first, data.first))
 						this->last = r->right;
 				}
 				else
@@ -448,9 +413,9 @@ namespace ft
 					return (curr);
 				else if (curr->data.first == value)
 					return (curr);
-				else if (value < curr->data.first)
+				else if (this->comp(value, curr->data.first))
 					curr = curr->left;
-				else if (value > curr->data.first)
+				else if (this->comp(curr->data.first, value))
 					curr = curr->right;
 			}
 		}
@@ -470,10 +435,9 @@ namespace ft
 		{
 			if (node == NULL)
 				return NULL;
-			
-			if (value < node->data.first)
+			if (this->comp(value, node->data.first))
 				node->left = removeKey(node->left, value);
-			else if (value > node->data.first)
+			else if (this->comp(node->data.first, value))
 				node->right = removeKey(node->right, value);
 			else if (node->right == NULL && node->left == NULL)
 			{
@@ -495,6 +459,13 @@ namespace ft
 					this->last = NULL;
 				}
 				this->sz--;
+				this->alloc.destroy(this->end);
+				this->alloc.deallocate(this->end, 1);
+				this->end = this->alloc.allocate(1);
+				if (ft::is_integral<typename value_type::first_type>::value)
+					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				else
+					this->alloc.construct(this->end, Node(value_type()));
 				this->alloc.destroy(node);
 				this->alloc.deallocate(node, 1);
 				return (NULL);
@@ -522,6 +493,13 @@ namespace ft
 				this->alloc.destroy(node);
 				this->alloc.deallocate(node, 1);
 				this->sz--;
+				this->alloc.destroy(this->end);
+				this->alloc.deallocate(this->end, 1);
+				this->end = this->alloc.allocate(1);
+				if (ft::is_integral<typename value_type::first_type>::value)
+					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				else
+					this->alloc.construct(this->end, Node(value_type()));
 				node = tmp;
 			}
 			else if (node->right == NULL)
@@ -547,12 +525,18 @@ namespace ft
 				this->alloc.destroy(node);
 				this->alloc.deallocate(node, 1);
 				this->sz--;
+				this->alloc.destroy(this->end);
+				this->alloc.deallocate(this->end, 1);
+				this->end = this->alloc.allocate(1);
+				if (ft::is_integral<typename value_type::first_type>::value)
+					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				else
+					this->alloc.construct(this->end, Node(value_type()));
 				node = tmp;
 			}
 			else
 			{
 				bool chk = 0;
-
 				Node* tmp = this->getFirstNode(node->right);
 				if (node == this->root)
 					chk = 1;
@@ -573,7 +557,7 @@ namespace ft
 					node->left->parent = node;
 				if (!chk)
 				{
-					if (node->data.first < node->parent->data.first)
+					if (this->comp(node->data.first, node->parent->data.first))
 						node->parent->left = node;
 					else
 						node->parent->right = node;
@@ -635,6 +619,7 @@ namespace ft
 		Node* 	root;
 		Node*	last;
 		Node*	first;
+		Node*	end;
 		size_type sz;
 		allocator_type alloc;
 		key_compare		comp;

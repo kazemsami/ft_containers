@@ -6,8 +6,8 @@ SRCS = main.cpp
 all: ${NAME}
 
 ${NAME}:
-	${CC} ${CFLAGS} ${SRCS} -std=c++98 -D TESTED_CONT=ft -o $@
-	${CC} ${CFLAGS} ${SRCS} -std=c++98 -D TESTED_CONT=std -o std_containers
+	${CC} ${CFLAGS} ${SRCS} -g -std=c++98 -D TESTED_CONT=ft -o $@
+	${CC} ${CFLAGS} ${SRCS} -g -std=c++98 -D TESTED_CONT=std -o std_containers
 
 clean:
 

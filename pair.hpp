@@ -23,7 +23,7 @@ namespace ft
 		: first(p.first), second(p.second)
 		{
 		}
-		pair& operator= (const pair& other)
+		pair& operator=(const pair& other)
 		{
 			if (this != &other)
 			{

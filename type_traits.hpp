@@ -14,6 +14,7 @@ namespace ft
 	{
 		static const bool value = V;
 		typedef T			value_type;
+		typedef integral_constant<T, V>   type;
 	};
 
 	typedef integral_constant<bool, true>     true_type;
@@ -75,9 +76,15 @@ namespace ft
 	template<>
 		struct is_integral_helper<unsigned long long>
 		: public true_type { };
+
+	template< class T > struct remove_cv                   { typedef T type; };
+	template< class T > struct remove_cv<const T>          { typedef T type; };
+	template< class T > struct remove_cv<volatile T>       { typedef T type; };
+	template< class T > struct remove_cv<const volatile T> { typedef T type; };
+	
 	template<typename T>
     struct is_integral
-    : public is_integral_helper<T>
+    : public is_integral_helper<typename ft::remove_cv<T>::type>::type
     { };
 
 	template<class InputIt1, class InputIt2>
