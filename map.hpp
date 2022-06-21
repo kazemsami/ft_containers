@@ -126,6 +126,20 @@ namespace ft
 			}
 			return (this->end());
 		}
+		mapped_type& at( const Key& key )
+		{
+			iterator it = this->find(key);
+			if (it == this->end())
+				throw std::out_of_range("map::at");
+			return (*it).second;
+		}
+		const mapped_type& at( const Key& key ) const
+		{
+			iterator it = this->find(key);
+			if (it == this->end())
+				throw std::out_of_range("map::at");
+			return (*it).second;
+		}
 		iterator lower_bound(const key_type& key)
 		{
 			for (iterator it = this->begin(); it != this->end(); it++)
@@ -166,6 +180,10 @@ namespace ft
 		ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
 		{
 			return (ft::make_pair(this->lower_bound(key), this->upper_bound(key)));
+		}
+		allocator_type get_allocator() const
+		{
+			return (this->alloc);
 		}
 		bool empty() const
 		{

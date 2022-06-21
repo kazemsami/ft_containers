@@ -4,9 +4,12 @@
 #include <memory>
 #include "pair.hpp"
 #include "type_traits.hpp"
+#include <typeinfo>
 #include "iterator.hpp"
 #include <algorithm>
-#include <iostream>
+#include <string>
+
+#define CHECK_TYPE(X) x == true
 
 namespace ft
 {
@@ -266,10 +269,11 @@ namespace ft
 		AvlTree() : root(NULL), last(NULL), first(NULL), sz(0), alloc(allocator_type()), comp(key_compare())
 		{
 			this->end = this->alloc.allocate(1);
-			if (ft::is_integral<typename value_type::first_type>::value)
-				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
-			else
-				this->alloc.construct(this->end, Node(value_type()));
+			#if CHECK_TYPE(ft::is_integral<typename value_type::first_type>::value)
+			this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+			#else
+			this->alloc.construct(this->end, Node(value_type()));
+			#endif
 		}
 		~AvlTree()
 		{
@@ -353,10 +357,11 @@ namespace ft
 				this->alloc.destroy(this->end);
 				this->alloc.deallocate(this->end, 1);
 				this->end = this->alloc.allocate(1);
-				if (ft::is_integral<typename value_type::first_type>::value)
-					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
-				else
-					this->alloc.construct(this->end, Node(value_type()));
+				#if CHECK_TYPE(ft::is_integral<typename value_type::first_type>::value)
+				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				#else
+				this->alloc.construct(this->end, Node(value_type()));
+				#endif
 				if (this->first == NULL)
 					this->first = n;
 				if (this->last == NULL)
@@ -462,10 +467,11 @@ namespace ft
 				this->alloc.destroy(this->end);
 				this->alloc.deallocate(this->end, 1);
 				this->end = this->alloc.allocate(1);
-				if (ft::is_integral<typename value_type::first_type>::value)
-					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
-				else
-					this->alloc.construct(this->end, Node(value_type()));
+				#if CHECK_TYPE(ft::is_integral<typename value_type::first_type>::value)
+				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				#else
+				this->alloc.construct(this->end, Node(value_type()));
+				#endif
 				this->alloc.destroy(node);
 				this->alloc.deallocate(node, 1);
 				return (NULL);
@@ -496,10 +502,11 @@ namespace ft
 				this->alloc.destroy(this->end);
 				this->alloc.deallocate(this->end, 1);
 				this->end = this->alloc.allocate(1);
-				if (ft::is_integral<typename value_type::first_type>::value)
-					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
-				else
-					this->alloc.construct(this->end, Node(value_type()));
+				#if CHECK_TYPE(ft::is_integral<typename value_type::first_type>::value)
+				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				#else
+				this->alloc.construct(this->end, Node(value_type()));
+			#endif
 				node = tmp;
 			}
 			else if (node->right == NULL)
@@ -528,10 +535,11 @@ namespace ft
 				this->alloc.destroy(this->end);
 				this->alloc.deallocate(this->end, 1);
 				this->end = this->alloc.allocate(1);
-				if (ft::is_integral<typename value_type::first_type>::value)
-					this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
-				else
-					this->alloc.construct(this->end, Node(value_type()));
+				#if CHECK_TYPE(ft::is_integral<typename value_type::first_type>::value)
+				this->alloc.construct(this->end, Node(ft::make_pair(this->sz, typename value_type::second_type())));
+				#else
+				this->alloc.construct(this->end, Node(value_type()));
+			#endif
 				node = tmp;
 			}
 			else

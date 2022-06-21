@@ -90,11 +90,9 @@ namespace ft
 			{
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i);
 					this->_alloc.construct(this->_end - i, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
-				this->_alloc.destroy(&(*pos));
 				this->_alloc.construct(&(*pos), value);
 				this->_end++;
 			}
@@ -108,11 +106,9 @@ namespace ft
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i);
 					this->_alloc.construct(this->_end - i, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
-				this->_alloc.destroy(&(*pos));
 				this->_alloc.construct(&(*pos), value);
 				this->_end++;
 			}
@@ -125,13 +121,11 @@ namespace ft
 			{
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i + count);
 					this->_alloc.construct(this->_end - i + count - 1, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
 				for (size_type i = 0; i < count; ++i)
 				{
-					this->_alloc.destroy(&(*(pos + i)));
 					this->_alloc.construct(&(*(pos + i)), value);
 				}
 				this->_end += count;
@@ -146,13 +140,11 @@ namespace ft
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i + count);
 					this->_alloc.construct(this->_end - i + count - 1, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
 				for (size_type i = 0; i < count; ++i)
 				{
-					this->_alloc.destroy(&(*(pos + i)));
 					this->_alloc.construct(&(*(pos + i)), value);
 				}
 				this->_end += count;
@@ -169,13 +161,11 @@ namespace ft
 			{
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i + count);
 					this->_alloc.construct(this->_end - i + count - 1, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
 				for (size_type i = 0; i < count; ++i)
 				{
-					this->_alloc.destroy(&(*(pos + i)));
 					this->_alloc.construct(&(*(pos + i)), *first);
 					first++;
 				}
@@ -191,13 +181,11 @@ namespace ft
 				pos = iterator(this->_start + diff);
 				for (size_type i = 0; i < this->size() - diff; i++)
 				{
-					if (i > 0)
-						this->_alloc.destroy(this->_end - i + count);
 					this->_alloc.construct(this->_end - i + count - 1, *(this->_end - i - 1));
+					this->_alloc.destroy(this->_end - i - 1);
 				}
 				for (size_type i = 0; i < count; ++i)
 				{
-					this->_alloc.destroy(&(*(pos + i)));
 					this->_alloc.construct(&(*(pos + i)), *first);
 					first++;
 				}

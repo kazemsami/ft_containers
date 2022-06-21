@@ -1,0 +1,5 @@
+It took 3 seconds to push back 1047552 buffers in vector
+It took 1 seconds to use vectors [](index) operator 1047552 times
+It took 1 seconds to insert 1047552 pairs in map
+It took 0 seconds to access or add 10000 pairs in map
+should be constant with the same seed: -2126811231
