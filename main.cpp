@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 
-#define MAX_RAM 4294967296
+#define MAX_RAM 94967296
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -42,11 +42,10 @@ public:
 };
 
 template<typename T>
-void	printVecInfo(T vec)
+void	printVecInfo(T& vec)
 {
 	std::cout << vec.empty() << std::endl;
 	std::cout << vec.size() << std::endl;
-	std::cout << vec.capacity() << std::endl;
 	std::cout << vec.max_size() << std::endl;
 	for (typename T::iterator it = vec.begin(); it != vec.end(); it++)
 	{
@@ -59,7 +58,7 @@ void	printVecInfo(T vec)
 }
 
 template<typename T>
-void	printMapInfo(T mp)
+void	printMapInfo(T& mp)
 {
 	std::cout << mp.empty() << std::endl;
 	std::cout << mp.size() << std::endl;
@@ -330,9 +329,6 @@ int main(int argc, char** argv) {
 		std::cout << pr1.first->first << pr1.first->second << pr1.second << std::endl;
 		std::cout << mp_test.at(3) << std::endl;
 		printMapInfo(mp_test);
-		std::cout << mp_test.end()->first << std::endl;
-		mp_test.erase(6);
-		std::cout << mp_test.end()->first << std::endl;
 		TESTED_CONT::map<int, std::string> tmp_mp;
 		tmp_mp = mp_test;
 		printMapInfo(tmp_mp);
@@ -380,7 +376,7 @@ int main(int argc, char** argv) {
 		printMapInfo(tmp_mpstr2);
 		mp_str = tmp_mpstr2;
 		std::cout << mp_str.count("hi") << std::endl;
-		std::cout << mp_str.upper_bound("yo")->first << std::endl;
+		std::cout << mp_str.upper_bound("hey")->first << std::endl;
 		std::cout << mp_str.lower_bound("hello")->first << std::endl;
 		std::cout << mp_str.find("sup")->first << std::endl;
 		TESTED_CONT::pair<TESTED_CONT::map<std::string, int>::iterator, TESTED_CONT::map<std::string, int>::iterator> prstr = mp_str.equal_range("hey");

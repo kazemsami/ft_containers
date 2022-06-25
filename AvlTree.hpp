@@ -15,7 +15,7 @@ namespace ft
 	class AvlNode
 	{
 	public:
-		T		data;
+		T			data;
 		AvlNode*	left;
 		AvlNode*	right;
 		AvlNode*	parent;
@@ -280,7 +280,7 @@ namespace ft
 				if (p->left->height < p->right->height)
 					return p->right->height + 1;
 				else
-					return  p->left->height + 1;
+					return p->left->height + 1;
             }
             else if(p->left && p->right == NULL)
 			{
@@ -377,7 +377,6 @@ namespace ft
 				else
 					return r;
 			}
-
 			r->height = calheight(r);
 
 			if (bf(r) > 1 && bf(r->left) >= 0)
