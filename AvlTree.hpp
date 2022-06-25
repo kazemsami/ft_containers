@@ -286,11 +286,11 @@ namespace ft
 			{
                return p->left->height + 1;
             }
-            else if(p->left ==NULL && p->right)
+            else if(p->left == NULL && p->right)
 			{
                return p->right->height + 1;
             }
-            return 0;
+            return 1;
 
 		}
 		int bf(Node *n){
@@ -378,19 +378,20 @@ namespace ft
 					return r;
 			}
 			r->height = calheight(r);
+			int	balance = bf(r);
 
-			if (bf(r) > 1 && bf(r->left) >= 0)
+			if (balance > 1 && bf(r->left) >= 0)
         		r = rightRotate(r);
  
-			if (bf(r) < -1 && bf(r->right) <= 0)
+			if (balance < -1 && bf(r->right) <= 0)
 				r = leftRotate(r);
 		
-			if (bf(r) > 1 && bf(r->left) < 0)
+			if (balance > 1 && bf(r->left) < 0)
 			{
 				r->left = leftRotate(r->left);
 				r = rightRotate(r);
 			}
-			if (bf(r) < -1 &&  bf(r->right) > 0)
+			if (balance < -1 &&  bf(r->right) > 0)
 			{
 				r->right = rightRotate(r->right);
 				r = leftRotate(r);
@@ -567,17 +568,18 @@ namespace ft
 			}
 
 			node->height = calheight(node);
+			int balance = bf(node);
 
-			if (bf(node) > 1 && bf(node->left) >= 0)
+			if (balance > 1 && bf(node->left) >= 0)
 				node = rightRotate(node);
-			if (bf(node) > 1 && bf(node->left) < 0)
+			if (balance > 1 && bf(node->left) < 0)
 			{
 				node->left = leftRotate(node->left);
 				node = rightRotate(node);
 			}
-			if (bf(node) < -1 && bf(node->right) <= 0)
+			if (balance < -1 && bf(node->right) <= 0)
 				node = leftRotate(node);
-			if (bf(node) < -1 && bf(node->right) > 0)
+			if (balance < -1 && bf(node->right) > 0)
 			{
 				node->right = rightRotate(node->right);
 				node = leftRotate(node);

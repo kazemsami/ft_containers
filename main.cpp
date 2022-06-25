@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 
-#define MAX_RAM 94967296
+#define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -134,9 +134,7 @@ int main(int argc, char** argv) {
 		map_int.insert(TESTED_CONT::make_pair(rand(), rand()));
 	}
 	time(&end);
-	TESTED_CONT::map<int, int> test;
 	std::cout << "It took " << end - start << " seconds to insert " << COUNT << " pairs in map" << std::endl;
-
 	time(&start);
 
 	int sum = 0;
