@@ -315,8 +315,8 @@ namespace ft
 			
 			p->left = tp->right;
 			tp->right = p;
-			tp->height = calheight(tp);
 			p->height = calheight(p);
+			tp->height = calheight(tp);
 			tp->parent = p->parent;
 			if (tp->right)
 				tp->right->parent = tp;
@@ -332,8 +332,8 @@ namespace ft
 			
 			p->right = tp->left;
 			tp->left = p;
-			tp->height = calheight(tp);
 			p->height = calheight(p);
+			tp->height = calheight(tp);
 			tp->parent = p->parent;
 			if (tp->left)
 				tp->left->parent = tp;
@@ -380,21 +380,19 @@ namespace ft
 			r->height = calheight(r);
 			int	balance = bf(r);
 
-			if (balance > 1 && bf(r->left) >= 0)
-        		r = rightRotate(r);
- 
-			if (balance < -1 && bf(r->right) <= 0)
-				r = leftRotate(r);
-		
-			if (balance > 1 && bf(r->left) < 0)
+			if (balance > 1 && r->left && this->comp(data.first, r->left->data.first))
+        		return rightRotate(r);
+			if (balance < -1 && r->right && this->comp(r->right->data.first, data.first))
+				return leftRotate(r);
+			if (balance > 1 && r->left && this->comp(r->left->data.first, data.first))
 			{
 				r->left = leftRotate(r->left);
-				r = rightRotate(r);
+				return rightRotate(r);
 			}
-			if (balance < -1 &&  bf(r->right) > 0)
+			if (balance < -1 && r->right && this->comp(data.first, r->right->data.first))
 			{
 				r->right = rightRotate(r->right);
-				r = leftRotate(r);
+				return leftRotate(r);
 			}
 			return r;
 
@@ -571,18 +569,18 @@ namespace ft
 			int balance = bf(node);
 
 			if (balance > 1 && bf(node->left) >= 0)
-				node = rightRotate(node);
+				return rightRotate(node);
 			if (balance > 1 && bf(node->left) < 0)
 			{
 				node->left = leftRotate(node->left);
-				node = rightRotate(node);
+				return rightRotate(node);
 			}
 			if (balance < -1 && bf(node->right) <= 0)
-				node = leftRotate(node);
+				return leftRotate(node);
 			if (balance < -1 && bf(node->right) > 0)
 			{
 				node->right = rightRotate(node->right);
-				node = leftRotate(node);
+				return leftRotate(node);
 			}
 			return (node);
 		}
@@ -591,9 +589,11 @@ namespace ft
 			Node* tmp_root = this->root;
 			Node* tmp_last = this->last;
 			Node* tmp_first = this->first;
+			Node* tmp_end = this->end;
 			allocator_type tmp_alloc = this->alloc;
 			key_compare tmp_comp = this->comp;
 			size_type tmp_sz = this->sz;
+			this->end = lst.end;
 			this->root = lst.root;
 			this->last = lst.last;
 			this->alloc = lst.alloc;
@@ -606,6 +606,7 @@ namespace ft
 			lst.comp = tmp_comp;
 			lst.first = tmp_first;
 			lst.sz = tmp_sz;
+			lst.end = tmp_end;
 		}
 		size_type	size() const
 		{
