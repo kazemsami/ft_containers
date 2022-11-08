@@ -4,9 +4,9 @@
 #include <map>
 #include <stack>
 #include <vector>
-#include "map.hpp"
-#include "stack.hpp"
-#include "vector.hpp"
+#include "./map/map.hpp"
+#include "./stack/stack.hpp"
+#include "./vector/vector.hpp"
 #include <ctime>
 
 #include <stdlib.h>
