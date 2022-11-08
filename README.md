@@ -7,7 +7,8 @@ ft_containers is a project where you have to reimplement STL containers such as 
 
  * Creating templated classes for `vector`, `map` and `stack` that contains all the functions and operations of the actual STL containers.
  * Implementing self-balancing binary trees such as AVL tree to speed up key value lookups for `map`.
- * 
+ * Creating an `iterator` class that allows you to iterate through `map`, `vector` and `stack` elements.
+ * Testing the STL containers with countless test cases.
 
 ### Installation
 ```
