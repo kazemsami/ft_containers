@@ -1,4 +1,4 @@
- # 42's Cub3D project
+ # 42's ft_containers project
 
 
 ft_containers is a project where you have to reimplement STL containers such as `map`, `vector`, `stack`.
