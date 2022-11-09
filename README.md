@@ -22,7 +22,7 @@ $ make
 `$ make re` which will force clean all files and redo the build.
 
 ### Usage
-`$ ./ft_containers`
+`$ ./ft_containers 42`
 #### To compare results with the actual STL containers
 ```
 ./ft_containers 42 > ft_cont && ./std_containers 42 > std_cont && diff ft_cont std_cont
