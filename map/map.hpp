@@ -4,8 +4,8 @@
 #include <functional>
 #include "pair.hpp"
 #include "AvlTree.hpp"
-#include "../utils/type_traits.hpp"
-#include "../vector/vector.hpp"
+#include "type_traits.hpp"
+#include "vector.hpp"
 #include <memory>
 
 namespace ft
